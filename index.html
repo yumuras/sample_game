@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>千本鳥居の向こう側</title>
+  <meta name="description" content="京都・伏見稲荷の千本鳥居をくぐると、その日の夕方に戻れる。15分で遊べる短編ノベルゲーム。">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E⛩%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="game">
+    <!-- タイトル画面 -->
+    <section id="title-screen" class="screen active">
+      <div class="title-bg"></div>
+      <div class="title-inner">
+        <p class="title-sub">短編ループノベル</p>
+        <h1 class="title-main">千本鳥居の<br>向こう側</h1>
+        <nav class="title-menu">
+          <button id="btn-new">はじめから</button>
+          <button id="btn-continue">つづきから</button>
+          <button id="btn-endings">エンディング一覧</button>
+        </nav>
+        <p class="title-note">約15分 ／ タップかクリック、スペースキーで進みます</p>
+      </div>
+    </section>
+
+    <!-- ゲーム画面 -->
+    <section id="play-screen" class="screen">
+      <div id="bg"></div>
+      <div id="bg-label"></div>
+      <div id="characters"></div>
+      <div id="hud">
+        <span id="hud-time"></span>
+        <span id="hud-torii" title="戻れる回数"></span>
+      </div>
+      <div id="effect"></div>
+      <div id="choices"></div>
+      <div id="textbox">
+        <div id="namebox"></div>
+        <p id="text"></p>
+        <span id="next-mark">▼</span>
+      </div>
+      <div id="menu-bar">
+        <button id="btn-log">ログ</button>
+        <button id="btn-title">タイトル</button>
+      </div>
+    </section>
+
+    <!-- エンディング画面 -->
+    <section id="ending-screen" class="screen">
+      <div class="ending-inner">
+        <p class="ending-label">ENDING</p>
+        <h2 id="ending-title"></h2>
+        <p id="ending-hint"></p>
+        <button id="btn-ending-back">タイトルへ</button>
+      </div>
+    </section>
+
+    <!-- エンディング一覧 -->
+    <section id="endings-screen" class="screen">
+      <div class="ending-inner">
+        <h2>エンディング一覧</h2>
+        <ul id="endings-list"></ul>
+        <button id="btn-endings-back">もどる</button>
+      </div>
+    </section>
+
+    <!-- ログ -->
+    <div id="log-overlay" hidden>
+      <div class="log-inner">
+        <div id="log-list"></div>
+        <button id="btn-log-close">とじる</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/assets.js"></script>
+  <script src="js/scenario.js"></script>
+  <script src="js/engine.js"></script>
+</body>
+</html>
