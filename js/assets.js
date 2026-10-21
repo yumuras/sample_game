@@ -46,4 +46,15 @@ window.ASSETS = {
     akari: { name: "葉月 灯", image: "", color: "#4a6fa5" },
     kuon: { name: "久遠", image: "", color: "#7a6f8c" },
   },
+
+  // BGM。ファイルのパスを書くとその曲に差し替わる（例: festival: "audio/festival.mp3"）。
+  // 空のあいだは js/bgm.js で合成した仮のBGMが流れる。
+  bgm: {
+    title: "",    // タイトル・バッドエンド1
+    daily: "",    // 部室などの日常
+    festival: "", // 宵山
+    tension: "",  // 事故のあと、探し物
+    torii: "",    // 千本鳥居
+    ending: "",   // トゥルーエンド
+  },
 };
