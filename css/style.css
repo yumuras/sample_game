@@ -75,6 +75,7 @@ button:disabled { opacity: 0.35; cursor: default; }
 .title-menu { display: flex; flex-direction: column; gap: 12px; width: min(260px, 100%); }
 .title-menu button { padding: 12px; font-size: 16px; letter-spacing: 0.2em; }
 .title-note { margin-top: 28px; font-size: 12px; opacity: 0.6; }
+.title-bgm { margin-top: 12px; padding: 5px 14px; font-size: 12px; }
 
 /* プレイ画面 */
 #bg {

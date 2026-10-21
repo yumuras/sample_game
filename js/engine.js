@@ -60,6 +60,12 @@
 
   function refreshTitle() {
     $("btn-continue").disabled = !storage.get(SAVE_KEY);
+    window.BGM.play("title");
+  }
+
+  function refreshBgmButtons() {
+    const label = window.BGM.isEnabled() ? "♪ BGM ON" : "♪ BGM OFF";
+    document.querySelectorAll(".btn-bgm").forEach((b) => { b.textContent = label; });
   }
 
   // ───────── 表示 ─────────
@@ -178,6 +184,7 @@
       save();
 
       if (step.bg) { state.bg = step.bg; renderBg(); }
+      if (step.bgm !== undefined) { state.bgm = step.bgm; window.BGM.play(state.bgm); }
       if (step.time !== undefined) state.time = step.time;
       if (step.show) Object.assign(state.chars, step.show);
       if (step.hide) {
@@ -224,7 +231,9 @@
   }
 
   function startGame(saved) {
-    state = saved || { scene: start, index: 0, flags: {}, torii: 3, time: "", bg: "black", chars: {} };
+    state = saved || { scene: start, index: 0, flags: {}, torii: 3, time: "", bg: "black", chars: {}, bgm: null };
+    window.BGM.unlock();
+    window.BGM.play(state.bgm);
     log = [];
     el.choices.innerHTML = "";
     el.textbox.hidden = false;
@@ -285,6 +294,14 @@
   $("btn-log").addEventListener("click", (e) => { e.stopPropagation(); openLog(); });
   $("btn-log-close").addEventListener("click", (e) => { e.stopPropagation(); el.log.hidden = true; });
 
+  document.querySelectorAll(".btn-bgm").forEach((b) => b.addEventListener("click", (e) => {
+    e.stopPropagation();
+    window.BGM.toggle();
+    refreshBgmButtons();
+  }));
+  // ブラウザは操作の前に音を出せないので、最初のタップでBGMを鳴らし始める
+  document.addEventListener("pointerdown", () => window.BGM.unlock());
+
   $("play-screen").addEventListener("click", advance);
   document.addEventListener("keydown", (e) => {
     if (!$("play-screen").classList.contains("active")) return;
@@ -293,4 +310,5 @@
   });
 
   refreshTitle();
+  refreshBgmButtons();
 })();

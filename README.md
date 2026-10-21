@@ -28,7 +28,8 @@ python3 -m http.server 8000
 | `index.html` | 画面の骨組み |
 | `css/style.css` | 見た目 |
 | `js/scenario.js` | シナリオ（ここを書き換えれば物語が変わる） |
-| `js/assets.js` | 背景と立ち絵の設定 |
+| `js/assets.js` | 背景・立ち絵・BGMの設定 |
+| `js/bgm.js` | BGMの再生と、仮BGMの合成 |
 | `js/engine.js` | 文字送り、選択肢、セーブなどの仕組み |
 
 ## 絵を差し替える
@@ -41,6 +42,21 @@ akari: { name: "葉月 灯", image: "images/chara/akari.png", ... },
 ```
 
 立ち絵は背景が透明なPNG（縦長）がおすすめです。
+
+## BGMを差し替える
+
+今はブラウザ上で合成した仮のBGM（都節音階の琴風・祭囃子風など）が流れます。`audio/` に音声ファイルを置き、`js/assets.js` の `bgm` にパスを書くと、その曲がループ再生されます。
+
+```js
+bgm: {
+  festival: "audio/festival.mp3",
+  ...
+},
+```
+
+曲は `title`（タイトル）、`daily`（日常）、`festival`（宵山）、`tension`（事故のあと）、`torii`（千本鳥居）、`ending`（トゥルーエンド）の6つです。フリー素材を使う場合は、各サイトの利用規約（クレジット表記の要否など）を確認してください。
+
+ブラウザの仕様で、最初にタップかクリックをするまで音は鳴りません。画面の「♪ BGM」ボタンでオン・オフを切り替えられます。
 
 ## シナリオの書き方
 
@@ -56,6 +72,7 @@ akari: { name: "葉月 灯", image: "images/chara/akari.png", ... },
 | `time` | `{ time: "7月16日 20:58" }` | 画面左上の時刻 |
 | `torii` | `{ torii: 2 }` | 戻れる回数（画面右上の鳥居マーク） |
 | `effect` | `{ effect: "flash" }` / `{ effect: "torii" }` | 演出 |
+| `bgm` | `{ bgm: "festival" }` / `{ bgm: null }` | BGMを切り替える（`null` で止める） |
 | `set` | `{ set: { foundCharm: true } }` | フラグを立てる |
 | `choice` | `{ choice: [{ text: "…", goto: "シーン名" }] }` | 選択肢。`set` や `if`（フラグが立っている時だけ出す）も書ける |
 | `goto` | `{ goto: "loop2" }` | 別のシーンへ移る |
