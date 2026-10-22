@@ -299,8 +299,11 @@
     window.BGM.toggle();
     refreshBgmButtons();
   }));
-  // ブラウザは操作の前に音を出せないので、最初のタップでBGMを鳴らし始める
-  document.addEventListener("pointerdown", () => window.BGM.unlock());
+  // ブラウザは操作の前に音を出せないので、タップやキー操作でBGMを鳴らし始める。
+  // スマホでは pointerdown だけでは許可されないため、touchend と click でも呼ぶ。
+  for (const type of ["pointerdown", "touchend", "click", "keydown"]) {
+    document.addEventListener(type, () => window.BGM.unlock(), { passive: true });
+  }
 
   $("play-screen").addEventListener("click", advance);
   document.addEventListener("keydown", (e) => {

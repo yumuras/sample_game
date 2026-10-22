@@ -68,18 +68,52 @@ window.BGM = (() => {
     try { localStorage.setItem(PREF_KEY, enabled ? "on" : "off"); } catch { /* 保存できなくても鳴らせる */ }
   }
 
-  // ブラウザは操作の前に音を出せないので、最初のクリック時に呼ぶ
+  // iPhoneはマナーモード中、Web Audio の音を消してしまう。
+  // 音楽再生として扱ってもらうと、マナーモードでも鳴るようになる。
+  let silentAudio = null;
+  function useMediaPlayback() {
+    try {
+      if (navigator.audioSession) navigator.audioSession.type = "playback";
+    } catch { /* 対応していないブラウザでは何もしない */ }
+    if (silentAudio) return;
+    // 古いiOS向け: 無音の音声を流しておくと、再生扱いに切り替わる
+    silentAudio = new Audio(silentWav());
+    silentAudio.loop = true;
+    silentAudio.setAttribute("playsinline", "");
+    silentAudio.play().catch(() => { silentAudio = null; });
+  }
+
+  function silentWav() {
+    const rate = 8000;
+    const samples = rate / 10;
+    const buf = new DataView(new ArrayBuffer(44 + samples));
+    const str = (o, s) => [...s].forEach((c, i) => buf.setUint8(o + i, c.charCodeAt(0)));
+    str(0, "RIFF"); buf.setUint32(4, 36 + samples, true); str(8, "WAVEfmt ");
+    buf.setUint32(16, 16, true); buf.setUint16(20, 1, true); buf.setUint16(22, 1, true);
+    buf.setUint32(24, rate, true); buf.setUint32(28, rate, true);
+    buf.setUint16(32, 1, true); buf.setUint16(34, 8, true);
+    str(36, "data"); buf.setUint32(40, samples, true);
+    for (let i = 0; i < samples; i++) buf.setUint8(44 + i, 128);
+    let bin = "";
+    new Uint8Array(buf.buffer).forEach((b) => { bin += String.fromCharCode(b); });
+    return `data:audio/wav;base64,${btoa(bin)}`;
+  }
+
+  // ブラウザは操作の前に音を出せないので、タップやクリックのたびに呼ぶ
   function unlock() {
+    if (!enabled) return;
     if (!ctx) {
       const AC = window.AudioContext || window.webkitAudioContext;
       if (!AC) return;
+      useMediaPlayback();
       ctx = new AC();
       master = ctx.createGain();
       master.gain.value = VOLUME;
       master.connect(ctx.destination);
     }
-    if (ctx.state === "suspended") ctx.resume();
-    if (enabled && wanted && (!current || current.id !== wanted)) start(wanted);
+    // iPhoneではアプリを切り替えると "interrupted" になるので、running 以外はすべて再開を試す
+    if (ctx.state !== "running") ctx.resume().catch(() => {});
+    if (wanted && (!current || current.id !== wanted)) start(wanted);
   }
 
   const freq = (midi) => 440 * Math.pow(2, (midi - 69) / 12);
