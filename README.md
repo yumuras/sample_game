@@ -17,6 +17,20 @@ python3 -m http.server 8000
 # http://localhost:8000 を開く
 ```
 
+## デスクトップアプリとして動かす（Electron）
+
+Steam などで配るためのデスクトップ版です。ブラウザ版と同じ `index.html` `css/` `js/` をそのまま使うので、ブラウザ版も今まで通り動きます。Node.js（22.12 以上）と pnpm が必要です。
+
+```sh
+pnpm install     # 初回だけ
+pnpm start       # アプリのウィンドウで起動（F11 で全画面）
+pnpm dist        # 配布用のアプリを release/ に作る
+```
+
+`pnpm dist` は、今使っているPCのOS向けのアプリを作ります（WindowsならWindows版、MacならMac版）。できたフォルダ（例: `release/win-unpacked/`）の中身が、そのままSteamにアップロードする中身になります。
+
+Electron まわりのコードは TypeScript で `electron/main.ts` に書いてあり、起動時に `dist-electron/` へ変換されます。
+
 ## GitHub Pages で公開する
 
 リポジトリの Settings → Pages で、Source を「Deploy from a branch」、Branch を `main` の `/ (root)` にして保存します。数分後に `https://yumuras.github.io/sample_game/` で遊べるようになります。
@@ -31,6 +45,8 @@ python3 -m http.server 8000
 | `js/assets.js` | 背景・立ち絵・BGMの設定 |
 | `js/bgm.js` | BGMの再生と、仮BGMの合成 |
 | `js/engine.js` | 文字送り、選択肢、セーブなどの仕組み |
+| `electron/main.ts` | デスクトップアプリ版のウィンドウ設定（TypeScript） |
+| `package.json` | デスクトップアプリ版の設定とコマンド |
 
 ## 絵を差し替える
 
