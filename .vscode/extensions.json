@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "biomejs.biome",
+    "bradlc.vscode-tailwindcss",
     "usernamehw.errorlens",
     "yoavbls.pretty-ts-errors",
     "ms-ceintl.vscode-language-pack-ja"

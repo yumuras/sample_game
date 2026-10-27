@@ -31,7 +31,7 @@ export function App() {
   };
 
   return (
-    <div id="game">
+    <div className="relative mx-auto h-dvh w-full max-w-240 overflow-hidden bg-black roomy:top-1/2 roomy:max-h-160 roomy:-translate-y-1/2">
       <TitleScreen
         active={screen === "title"}
         canContinue={screen === "title" && !!storage.get(storage.SAVE_KEY)}
