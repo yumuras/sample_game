@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+/* 色・フォント・アニメーションの名前を決める（bg-vermilion、font-serif、animate-blink などで使える） */
+@theme {
+  --color-vermilion: #d23a1f;
+  --color-ink: #f4efe6;
+  --color-panel: rgba(12, 10, 18, 0.82);
+  --color-panel-line: rgba(244, 239, 230, 0.25);
+  --font-serif: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+
+  --animate-drift: drift 30s linear infinite;
+  --animate-fadein: fadein 0.4s;
+  --animate-fadein-fast: fadein 0.3s;
+  --animate-blink: blink 1s infinite;
+  --animate-flash: flash 0.7s;
+  --animate-torii: torii 2.6s ease-in forwards;
+
+  @keyframes drift {
+    to {
+      background-position: 400px 0;
+    }
+  }
+  @keyframes fadein {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  @keyframes flash {
+    0% {
+      background: #fff;
+    }
+    100% {
+      background: transparent;
+    }
+  }
+  @keyframes torii {
+    0% {
+      opacity: 0;
+      transform: scale(1);
+    }
+    20% {
+      opacity: 1;
+    }
+    85% {
+      opacity: 1;
+      transform: scale(3);
+      filter: blur(2px);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(4);
+      background: #fff;
+    }
+  }
+}
+
+/* PCなど、縦横どちらも広い画面（ゲーム画面を中央に置く） */
+@custom-variant roomy (@media (min-width: 700px) and (min-height: 700px));
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    background: #000;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    -webkit-tap-highlight-color: transparent;
+  }
+}
