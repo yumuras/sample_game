@@ -22,3 +22,5 @@ jobs:
       - run: pnpm exec biome ci .
       # TypeScript の型チェック
       - run: pnpm typecheck
+      # ブラウザ版がビルドできるか
+      - run: pnpm exec vite build

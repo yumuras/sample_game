@@ -1,8 +1,9 @@
 import path from "node:path";
 import { app, BrowserWindow, Menu } from "electron";
 
-// ゲーム本体（index.html と css/ js/）はブラウザ版と同じファイルをそのまま読み込む
-const ROOT = path.join(__dirname, "..");
+// 開発中（pnpm dev:app）は Vite の開発サーバーを、それ以外はビルド済みの dist/ を読み込む
+const DEV_SERVER_URL = process.env.VITE_DEV_SERVER_URL;
+const DIST = path.join(__dirname, "..", "dist");
 
 function createWindow(): void {
   const win = new BrowserWindow({
@@ -21,7 +22,8 @@ function createWindow(): void {
     },
   });
 
-  win.loadFile(path.join(ROOT, "index.html"));
+  if (DEV_SERVER_URL) win.loadURL(DEV_SERVER_URL);
+  else win.loadFile(path.join(DIST, "index.html"));
 
   // F11 で全画面を切り替え
   win.webContents.on("before-input-event", (event, input) => {

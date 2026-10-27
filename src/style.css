@@ -11,9 +11,14 @@
 }
 
 html,
+body,
+#root {
+  height: 100%;
+}
+
+html,
 body {
   margin: 0;
-  height: 100%;
   background: #000;
   color: var(--ink);
   font-family: var(--font);

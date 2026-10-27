@@ -1,6 +1,8 @@
 // シナリオデータ
 // 各シーンは命令の配列。使える命令は README.md を参照。
-window.SCENARIO = {
+import type { Scenario } from "./types";
+
+export const scenario: Scenario = {
   start: "prologue",
 
   scenes: {

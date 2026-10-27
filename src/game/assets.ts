@@ -1,8 +1,24 @@
 // 背景と立ち絵の設定
-// 本番の絵ができたら image にパスを書くと、その画像に差し替わる（例: image: "images/bg/clubroom.jpg"）。
+// 本番の絵ができたら public/images/ に画像を置き、image にパスを書くと差し替わる（例: image: "images/bg/clubroom.jpg"）。
 // image が空のあいだは、下の仮絵（CSSのグラデーションとSVGのシルエット）が表示される。
 
-window.ASSETS = {
+export interface Background {
+  label: string;
+  image: string;
+  placeholder: string;
+}
+
+export interface Character {
+  name: string;
+  image: string;
+  color: string;
+}
+
+export const assets: {
+  backgrounds: Record<string, Background>;
+  characters: Record<string, Character>;
+  bgm: Record<string, string>;
+} = {
   backgrounds: {
     black: { label: "", image: "", placeholder: "linear-gradient(#000, #000)" },
     clubroom: {
@@ -49,8 +65,8 @@ window.ASSETS = {
     kuon: { name: "久遠", image: "", color: "#7a6f8c" },
   },
 
-  // BGM。ファイルのパスを書くとその曲に差し替わる（例: festival: "audio/festival.mp3"）。
-  // 空のあいだは js/bgm.js で合成した仮のBGMが流れる。
+  // BGM。public/audio/ に音声を置いてパスを書くとその曲に差し替わる（例: festival: "audio/festival.mp3"）。
+  // 空のあいだは src/game/bgm.ts で合成した仮のBGMが流れる。
   bgm: {
     title: "", // タイトル・バッドエンド1
     daily: "", // 部室などの日常
