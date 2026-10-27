@@ -37,16 +37,16 @@ Electron まわりのコードは TypeScript で `electron/main.ts` に書いて
 
 ## ファイル構成
 
-| ファイル | 内容 |
-| --- | --- |
-| `index.html` | 画面の骨組み |
-| `css/style.css` | 見た目 |
-| `js/scenario.js` | シナリオ（ここを書き換えれば物語が変わる） |
-| `js/assets.js` | 背景・立ち絵・BGMの設定 |
-| `js/bgm.js` | BGMの再生と、仮BGMの合成 |
-| `js/engine.js` | 文字送り、選択肢、セーブなどの仕組み |
+| ファイル           | 内容                                               |
+| ------------------ | -------------------------------------------------- |
+| `index.html`       | 画面の骨組み                                       |
+| `css/style.css`    | 見た目                                             |
+| `js/scenario.js`   | シナリオ（ここを書き換えれば物語が変わる）         |
+| `js/assets.js`     | 背景・立ち絵・BGMの設定                            |
+| `js/bgm.js`        | BGMの再生と、仮BGMの合成                           |
+| `js/engine.js`     | 文字送り、選択肢、セーブなどの仕組み               |
 | `electron/main.ts` | デスクトップアプリ版のウィンドウ設定（TypeScript） |
-| `package.json` | デスクトップアプリ版の設定とコマンド |
+| `package.json`     | デスクトップアプリ版の設定とコマンド               |
 
 ## 絵を差し替える
 
@@ -78,20 +78,20 @@ bgm: {
 
 `js/scenario.js` の各シーンは、命令を順番に並べた配列です。一つの命令に複数の項目を書くこともできます。
 
-| 項目 | 例 | 意味 |
-| --- | --- | --- |
-| `text` | `{ text: "地の文" }` | 文章を表示してクリックを待つ |
-| `name` | `{ name: "灯", text: "セリフ" }` | 話している人の名前 |
-| `bg` | `{ bg: "clubroom" }` | 背景を切り替える |
-| `show` | `{ show: { akari: "right" } }` | 立ち絵を出す（`left` / `center` / `right`） |
-| `hide` | `{ hide: "akari" }` / `{ hide: "all" }` | 立ち絵を消す |
-| `time` | `{ time: "7月16日 20:58" }` | 画面左上の時刻 |
-| `torii` | `{ torii: 2 }` | 戻れる回数（画面右上の鳥居マーク） |
-| `effect` | `{ effect: "flash" }` / `{ effect: "torii" }` | 演出 |
-| `bgm` | `{ bgm: "festival" }` / `{ bgm: null }` | BGMを切り替える（`null` で止める） |
-| `set` | `{ set: { foundCharm: true } }` | フラグを立てる |
+| 項目     | 例                                              | 意味                                                          |
+| -------- | ----------------------------------------------- | ------------------------------------------------------------- |
+| `text`   | `{ text: "地の文" }`                            | 文章を表示してクリックを待つ                                  |
+| `name`   | `{ name: "灯", text: "セリフ" }`                | 話している人の名前                                            |
+| `bg`     | `{ bg: "clubroom" }`                            | 背景を切り替える                                              |
+| `show`   | `{ show: { akari: "right" } }`                  | 立ち絵を出す（`left` / `center` / `right`）                   |
+| `hide`   | `{ hide: "akari" }` / `{ hide: "all" }`         | 立ち絵を消す                                                  |
+| `time`   | `{ time: "7月16日 20:58" }`                     | 画面左上の時刻                                                |
+| `torii`  | `{ torii: 2 }`                                  | 戻れる回数（画面右上の鳥居マーク）                            |
+| `effect` | `{ effect: "flash" }` / `{ effect: "torii" }`   | 演出                                                          |
+| `bgm`    | `{ bgm: "festival" }` / `{ bgm: null }`         | BGMを切り替える（`null` で止める）                            |
+| `set`    | `{ set: { foundCharm: true } }`                 | フラグを立てる                                                |
 | `choice` | `{ choice: [{ text: "…", goto: "シーン名" }] }` | 選択肢。`set` や `if`（フラグが立っている時だけ出す）も書ける |
-| `goto` | `{ goto: "loop2" }` | 別のシーンへ移る |
-| `ending` | `{ ending: "true" }` | エンディング（`endings` に登録したもの） |
+| `goto`   | `{ goto: "loop2" }`                             | 別のシーンへ移る                                              |
+| `ending` | `{ ending: "true" }`                            | エンディング（`endings` に登録したもの）                      |
 
 各シーンは必ず `goto`、`choice`、`ending` のどれかで終わるようにしてください。

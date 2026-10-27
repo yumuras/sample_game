@@ -20,13 +20,21 @@ window.BGM = (() => {
       bpm: 84,
       voices: [
         { type: "pluck", notes: [72, null, 76, 79, null, 76, 74, null, 72, null, 69, 72, null, null, 74, null] },
-        { type: "pluck", gain: 0.6, notes: [48, null, null, null, null, null, null, null, 55, null, null, null, null, null, null, null] },
+        {
+          type: "pluck",
+          gain: 0.6,
+          notes: [48, null, null, null, null, null, null, null, 55, null, null, null, null, null, null, null],
+        },
       ],
     },
     festival: {
       bpm: 112,
       voices: [
-        { type: "bell", gain: 0.5, notes: [91, null, 91, 96, null, 91, 96, null, 91, null, 91, 96, null, 91, 96, null] },
+        {
+          type: "bell",
+          gain: 0.5,
+          notes: [91, null, 91, 96, null, 91, 96, null, 91, null, 91, 96, null, 91, 96, null],
+        },
         { type: "flute", notes: [86, null, 82, 81, 79, null, 81, null, 82, null, 81, 79, 75, null, 74, null] },
         { type: "drum", notes: [1, null, null, null, null, null, 1, null, 1, null, null, null, 1, null, null, null] },
       ],
@@ -35,22 +43,37 @@ window.BGM = (() => {
       bpm: 70,
       drone: [38, 39],
       voices: [
-        { type: "drum", gain: 0.7, notes: [1, null, 1, null, null, null, null, null, 1, null, 1, null, null, null, null, null] },
-        { type: "pluck", gain: 0.7, notes: [null, null, null, null, 63, null, null, null, null, null, null, null, 62, null, null, null] },
+        {
+          type: "drum",
+          gain: 0.7,
+          notes: [1, null, 1, null, null, null, null, null, 1, null, 1, null, null, null, null, null],
+        },
+        {
+          type: "pluck",
+          gain: 0.7,
+          notes: [null, null, null, null, 63, null, null, null, null, null, null, null, 62, null, null, null],
+        },
       ],
     },
     torii: {
       bpm: 56,
       drone: [50, 57],
       voices: [
-        { type: "bell", notes: [86, null, null, null, null, null, 81, null, null, null, 82, null, null, null, null, null] },
+        {
+          type: "bell",
+          notes: [86, null, null, null, null, null, 81, null, null, null, 82, null, null, null, null, null],
+        },
       ],
     },
     ending: {
       bpm: 72,
       voices: [
         { type: "pluck", notes: [60, 64, 67, 72, 65, 69, 72, 77, 67, 71, 74, 79, 64, 67, 72, 76] },
-        { type: "flute", gain: 0.6, notes: [76, null, null, null, 77, null, null, null, 79, null, null, null, 76, null, null, null] },
+        {
+          type: "flute",
+          gain: 0.6,
+          notes: [76, null, null, null, 77, null, null, null, 79, null, null, null, 76, null, null, null],
+        },
       ],
     },
   };
@@ -62,10 +85,18 @@ window.BGM = (() => {
   let enabled = loadPref();
 
   function loadPref() {
-    try { return localStorage.getItem(PREF_KEY) !== "off"; } catch { return true; }
+    try {
+      return localStorage.getItem(PREF_KEY) !== "off";
+    } catch {
+      return true;
+    }
   }
   function savePref() {
-    try { localStorage.setItem(PREF_KEY, enabled ? "on" : "off"); } catch { /* 保存できなくても鳴らせる */ }
+    try {
+      localStorage.setItem(PREF_KEY, enabled ? "on" : "off");
+    } catch {
+      /* 保存できなくても鳴らせる */
+    }
   }
 
   // iPhoneはマナーモード中、Web Audio の音を消してしまう。
@@ -74,28 +105,43 @@ window.BGM = (() => {
   function useMediaPlayback() {
     try {
       if (navigator.audioSession) navigator.audioSession.type = "playback";
-    } catch { /* 対応していないブラウザでは何もしない */ }
+    } catch {
+      /* 対応していないブラウザでは何もしない */
+    }
     if (silentAudio) return;
     // 古いiOS向け: 無音の音声を流しておくと、再生扱いに切り替わる
     silentAudio = new Audio(silentWav());
     silentAudio.loop = true;
     silentAudio.setAttribute("playsinline", "");
-    silentAudio.play().catch(() => { silentAudio = null; });
+    silentAudio.play().catch(() => {
+      silentAudio = null;
+    });
   }
 
   function silentWav() {
     const rate = 8000;
     const samples = rate / 10;
     const buf = new DataView(new ArrayBuffer(44 + samples));
-    const str = (o, s) => [...s].forEach((c, i) => buf.setUint8(o + i, c.charCodeAt(0)));
-    str(0, "RIFF"); buf.setUint32(4, 36 + samples, true); str(8, "WAVEfmt ");
-    buf.setUint32(16, 16, true); buf.setUint16(20, 1, true); buf.setUint16(22, 1, true);
-    buf.setUint32(24, rate, true); buf.setUint32(28, rate, true);
-    buf.setUint16(32, 1, true); buf.setUint16(34, 8, true);
-    str(36, "data"); buf.setUint32(40, samples, true);
+    const str = (o, s) => {
+      for (let i = 0; i < s.length; i++) buf.setUint8(o + i, s.charCodeAt(i));
+    };
+    str(0, "RIFF");
+    buf.setUint32(4, 36 + samples, true);
+    str(8, "WAVEfmt ");
+    buf.setUint32(16, 16, true);
+    buf.setUint16(20, 1, true);
+    buf.setUint16(22, 1, true);
+    buf.setUint32(24, rate, true);
+    buf.setUint32(28, rate, true);
+    buf.setUint16(32, 1, true);
+    buf.setUint16(34, 8, true);
+    str(36, "data");
+    buf.setUint32(40, samples, true);
     for (let i = 0; i < samples; i++) buf.setUint8(44 + i, 128);
     let bin = "";
-    new Uint8Array(buf.buffer).forEach((b) => { bin += String.fromCharCode(b); });
+    new Uint8Array(buf.buffer).forEach((b) => {
+      bin += String.fromCharCode(b);
+    });
     return `data:audio/wav;base64,${btoa(bin)}`;
   }
 
@@ -116,7 +162,7 @@ window.BGM = (() => {
     if (wanted && (!current || current.id !== wanted)) start(wanted);
   }
 
-  const freq = (midi) => 440 * Math.pow(2, (midi - 69) / 12);
+  const freq = (midi) => 440 * 2 ** ((midi - 69) / 12);
 
   // ───────── 音色 ─────────
   function envGain(t, peak, attack, decay) {
@@ -212,7 +258,7 @@ window.BGM = (() => {
     const timer = setInterval(tick, 100);
     return () => {
       clearInterval(timer);
-      drones.forEach((o) => o.stop());
+      for (const o of drones) o.stop();
     };
   }
 
@@ -238,7 +284,7 @@ window.BGM = (() => {
 
   function start(id) {
     fadeOut();
-    const file = (window.ASSETS.bgm || {})[id];
+    const file = window.ASSETS.bgm?.[id];
     const track = TRACKS[id];
     if (!file && !track) return;
     const gain = ctx.createGain();

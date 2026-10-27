@@ -10,9 +10,13 @@
     "start": "tsc && electron .",
     "dist": "tsc && electron-builder",
     "dist:win": "tsc && electron-builder --win",
-    "dist:mac": "tsc && electron-builder --mac"
+    "dist:mac": "tsc && electron-builder --mac",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "format": "biome check --write ."
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.6.3",
     "electron": "^45.0.0",
     "electron-builder": "^26.18.0",
     "typescript": "^5.9.0"
@@ -20,7 +24,9 @@
   "build": {
     "appId": "io.github.yumuras.senbontorii",
     "productName": "千本鳥居の向こう側",
-    "directories": { "output": "release" },
+    "directories": {
+      "output": "release"
+    },
     "files": [
       "index.html",
       "css/**/*",
@@ -30,8 +36,14 @@
       "dist-electron/**/*",
       "package.json"
     ],
-    "win": { "target": "dir" },
-    "mac": { "target": "dir" },
-    "linux": { "target": "dir" }
+    "win": {
+      "target": "dir"
+    },
+    "mac": {
+      "target": "dir"
+    },
+    "linux": {
+      "target": "dir"
+    }
   }
 }

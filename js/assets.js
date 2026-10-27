@@ -13,7 +13,8 @@ window.ASSETS = {
     shijo_night: {
       label: "四条烏丸・宵山",
       image: "",
-      placeholder: "radial-gradient(circle at 20% 30%, #ffb34788 0 4%, transparent 5%), radial-gradient(circle at 45% 25%, #ffb34788 0 4%, transparent 5%), radial-gradient(circle at 70% 32%, #ffb34788 0 4%, transparent 5%), radial-gradient(circle at 88% 22%, #ffb34788 0 4%, transparent 5%), linear-gradient(180deg, #0b1030 0%, #2a1b4a 60%, #5a2a3a 100%)",
+      placeholder:
+        "radial-gradient(circle at 20% 30%, #ffb34788 0 4%, transparent 5%), radial-gradient(circle at 45% 25%, #ffb34788 0 4%, transparent 5%), radial-gradient(circle at 70% 32%, #ffb34788 0 4%, transparent 5%), radial-gradient(circle at 88% 22%, #ffb34788 0 4%, transparent 5%), linear-gradient(180deg, #0b1030 0%, #2a1b4a 60%, #5a2a3a 100%)",
     },
     home_night: {
       label: "湊の部屋",
@@ -38,7 +39,8 @@ window.ASSETS = {
     kamogawa: {
       label: "鴨川・出町柳の飛び石",
       image: "",
-      placeholder: "radial-gradient(ellipse at 30% 75%, #6d6a5f 0 5%, transparent 6%), radial-gradient(ellipse at 50% 78%, #6d6a5f 0 5%, transparent 6%), radial-gradient(ellipse at 70% 75%, #6d6a5f 0 5%, transparent 6%), linear-gradient(180deg, #f3a86b 0%, #c96b6b 40%, #3f6f8f 62%, #1f3f5a 100%)",
+      placeholder:
+        "radial-gradient(ellipse at 30% 75%, #6d6a5f 0 5%, transparent 6%), radial-gradient(ellipse at 50% 78%, #6d6a5f 0 5%, transparent 6%), radial-gradient(ellipse at 70% 75%, #6d6a5f 0 5%, transparent 6%), linear-gradient(180deg, #f3a86b 0%, #c96b6b 40%, #3f6f8f 62%, #1f3f5a 100%)",
     },
   },
 
@@ -50,11 +52,11 @@ window.ASSETS = {
   // BGM。ファイルのパスを書くとその曲に差し替わる（例: festival: "audio/festival.mp3"）。
   // 空のあいだは js/bgm.js で合成した仮のBGMが流れる。
   bgm: {
-    title: "",    // タイトル・バッドエンド1
-    daily: "",    // 部室などの日常
+    title: "", // タイトル・バッドエンド1
+    daily: "", // 部室などの日常
     festival: "", // 宵山
-    tension: "",  // 事故のあと、探し物
-    torii: "",    // 千本鳥居
-    ending: "",   // トゥルーエンド
+    tension: "", // 事故のあと、探し物
+    torii: "", // 千本鳥居
+    ending: "", // トゥルーエンド
   },
 };

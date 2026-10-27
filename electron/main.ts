@@ -1,5 +1,5 @@
-import { app, BrowserWindow, Menu } from "electron";
 import path from "node:path";
+import { app, BrowserWindow, Menu } from "electron";
 
 // ゲーム本体（index.html と css/ js/）はブラウザ版と同じファイルをそのまま読み込む
 const ROOT = path.join(__dirname, "..");

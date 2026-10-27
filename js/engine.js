@@ -33,10 +33,18 @@
   // ───────── 保存 ─────────
   const storage = {
     get(key) {
-      try { return JSON.parse(localStorage.getItem(key)); } catch { return null; }
+      try {
+        return JSON.parse(localStorage.getItem(key));
+      } catch {
+        return null;
+      }
     },
     set(key, value) {
-      try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* 保存できなくても遊べる */ }
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+      } catch {
+        /* 保存できなくても遊べる */
+      }
     },
   };
 
@@ -55,7 +63,7 @@
 
   // ───────── 画面切り替え ─────────
   function showScreen(id) {
-    el.screens.forEach((s) => s.classList.toggle("active", s.id === id));
+    for (const s of el.screens) s.classList.toggle("active", s.id === id);
   }
 
   function refreshTitle() {
@@ -65,7 +73,9 @@
 
   function refreshBgmButtons() {
     const label = window.BGM.isEnabled() ? "♪ BGM ON" : "♪ BGM OFF";
-    document.querySelectorAll(".btn-bgm").forEach((b) => { b.textContent = label; });
+    document.querySelectorAll(".btn-bgm").forEach((b) => {
+      b.textContent = label;
+    });
   }
 
   // ───────── 表示 ─────────
@@ -123,7 +133,10 @@
         typing = null;
         el.text.textContent = text;
         el.next.hidden = false;
-        waiting = () => { waiting = null; resolve(); };
+        waiting = () => {
+          waiting = null;
+          resolve();
+        };
       };
       typing = {
         finish,
@@ -166,7 +179,12 @@
     void el.effect.offsetWidth; // アニメーションを毎回やり直す
     el.effect.className = `fx-${kind}`;
     const ms = kind === "torii" ? 2600 : 700;
-    return new Promise((r) => setTimeout(() => { el.effect.className = ""; r(); }, ms));
+    return new Promise((r) =>
+      setTimeout(() => {
+        el.effect.className = "";
+        r();
+      }, ms),
+    );
   }
 
   // ───────── 進行 ─────────
@@ -177,14 +195,21 @@
   }
 
   async function run() {
-    const token = (run.token = {});
+    const token = {};
+    run.token = token;
     while (token === run.token) {
       const step = scenes[state.scene][state.index];
       if (!step) throw new Error(`シーン「${state.scene}」が goto か ending で終わっていません`);
       save();
 
-      if (step.bg) { state.bg = step.bg; renderBg(); }
-      if (step.bgm !== undefined) { state.bgm = step.bgm; window.BGM.play(state.bgm); }
+      if (step.bg) {
+        state.bg = step.bg;
+        renderBg();
+      }
+      if (step.bgm !== undefined) {
+        state.bgm = step.bgm;
+        window.BGM.play(state.bgm);
+      }
       if (step.time !== undefined) state.time = step.time;
       if (step.show) Object.assign(state.chars, step.show);
       if (step.hide) {
@@ -214,8 +239,14 @@
         jump(opt.goto);
         continue;
       }
-      if (step.goto) { jump(step.goto); continue; }
-      if (step.ending) { finishEnding(step.ending); return; }
+      if (step.goto) {
+        jump(step.goto);
+        continue;
+      }
+      if (step.ending) {
+        finishEnding(step.ending);
+        return;
+      }
 
       state.index += 1;
     }
@@ -244,7 +275,10 @@
 
   function stopGame() {
     run.token = null;
-    if (typing) { clearInterval(typing.timer); typing = null; }
+    if (typing) {
+      clearInterval(typing.timer);
+      typing = null;
+    }
     waiting = null;
   }
 
@@ -283,22 +317,36 @@
   $("btn-new").addEventListener("click", () => startGame(null));
   $("btn-continue").addEventListener("click", () => startGame(storage.get(SAVE_KEY)));
   $("btn-endings").addEventListener("click", showEndings);
-  $("btn-endings-back").addEventListener("click", () => { refreshTitle(); showScreen("title-screen"); });
-  $("btn-ending-back").addEventListener("click", () => { refreshTitle(); showScreen("title-screen"); });
+  $("btn-endings-back").addEventListener("click", () => {
+    refreshTitle();
+    showScreen("title-screen");
+  });
+  $("btn-ending-back").addEventListener("click", () => {
+    refreshTitle();
+    showScreen("title-screen");
+  });
   $("btn-title").addEventListener("click", (e) => {
     e.stopPropagation();
     stopGame();
     refreshTitle();
     showScreen("title-screen");
   });
-  $("btn-log").addEventListener("click", (e) => { e.stopPropagation(); openLog(); });
-  $("btn-log-close").addEventListener("click", (e) => { e.stopPropagation(); el.log.hidden = true; });
-
-  document.querySelectorAll(".btn-bgm").forEach((b) => b.addEventListener("click", (e) => {
+  $("btn-log").addEventListener("click", (e) => {
     e.stopPropagation();
-    window.BGM.toggle();
-    refreshBgmButtons();
-  }));
+    openLog();
+  });
+  $("btn-log-close").addEventListener("click", (e) => {
+    e.stopPropagation();
+    el.log.hidden = true;
+  });
+
+  for (const b of document.querySelectorAll(".btn-bgm")) {
+    b.addEventListener("click", (e) => {
+      e.stopPropagation();
+      window.BGM.toggle();
+      refreshBgmButtons();
+    });
+  }
   // ブラウザは操作の前に音を出せないので、タップやキー操作でBGMを鳴らし始める。
   // スマホでは pointerdown だけでは許可されないため、touchend と click でも呼ぶ。
   for (const type of ["pointerdown", "touchend", "click", "keydown"]) {
@@ -308,7 +356,10 @@
   $("play-screen").addEventListener("click", advance);
   document.addEventListener("keydown", (e) => {
     if (!$("play-screen").classList.contains("active")) return;
-    if (e.key === " " || e.key === "Enter") { e.preventDefault(); advance(); }
+    if (e.key === " " || e.key === "Enter") {
+      e.preventDefault();
+      advance();
+    }
     if (e.key === "Escape") el.log.hidden = true;
   });
 
